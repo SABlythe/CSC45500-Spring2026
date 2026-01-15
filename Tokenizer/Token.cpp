@@ -50,7 +50,86 @@ TokType getToken(istream &is, string &val)
 
   if (!tableFilled)
     {
+      // initialize every transition (arrow) to be an error
+      for (int row=0; row<=7; row++)
+	for (int col=0; col<=255; col++)
+	  DFA[row][col] = ERROR;
+
+      //from state 0
+      for (char ch='a'; ch <= 'z'; ch++)
+	DFA[0][(unsigned int) ch] = 1;
+      for (char ch='A'; ch <= 'Z'; ch++)
+	DFA[0][(unsigned int) ch] = 1;
+
+      for (char ch='0'; ch <= '9'; ch++)
+	DFA[0][(unsigned int) ch] = 2;
+
+      DFA[0][(unsigned int) '-'] = 3;
+      DFA[0][(unsigned int) '+'] = 4;
+      DFA[0][(unsigned int) '*'] = 5;
+      DFA[0][(unsigned int) '/'] = 6;
+
+      //from state 1 
+      for (char ch='a'; ch <= 'z'; ch++)
+	DFA[1][(unsigned int) ch] = 1;
+      for (char ch='A'; ch <= 'Z'; ch++)
+	DFA[1][(unsigned int) ch] = 1;
+      for (char ch='0'; ch <= '9'; ch++)
+	DFA[1][(unsigned int) ch] = 1;
+
+      // from state 2
+      for (char ch='0'; ch <= '9'; ch++)
+	DFA[2][(unsigned int) ch] = 2;
+
+      // from state 4
+      DFA[4][(unsigned int) '+'] = 7;
       
       tableFilled=true;
     }
+
+
+  // skip over whitespace ....
+  char dummy;
+  //is >> dummy;
+  dummy = is.get();
+  while (isspace(dummy))
+    dummy = is.get();
+
+  //oops ... read something that wasn't a space. We need it to be
+  // part of the token we are tryting to get !!!
+  is.unget();
+
+  // nothing left in the input stream? no more tokens!
+  if (!is)
+    return EOI;
+
+  // initialize states 
+  int currState = 0;
+  int prevState = ERROR;
+  tval="";
+
+  while(currState!= ERROR)
+    {
+      // back up the current state
+      prevState = currState; 
+
+      // move on to the next state. 
+      char nextChar = is.get();
+      int nextState = DFA[currState][nextChar]; 
+      currState = nextState;
+
+      // as long as next character was valid, add it to token value
+      if (currState!=ERROR)
+	tval+=nextChar;
+    }
+
+  // last char we got was not part of token, so might be part of
+  //   next token
+  is.unget();
+  
+  return EOI /* change to TokType based on prevState */; 
+  
+
+  
+  
 }
