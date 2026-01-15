@@ -43,7 +43,7 @@ void printToken(TokType ttype, const string &tval)
   
 }
 
-TokType getToken(istream &is, string &val)
+TokType getToken(istream &is, string &tval)
 {
   static int DFA[8][256];
   static bool tableFilled=false;
