@@ -1,0 +1,56 @@
+#include "Token.hpp"
+
+using namespace std;
+
+#define ERROR -1
+
+void printToken(TokType ttype, const string &tval)
+{
+  if (ttype==EOI)
+    {
+      cout << "End of Input" << endl;
+      return;
+    }
+
+  switch(ttype)
+    {
+    case ID:
+      cout << "ID: ";
+      break;
+    case INT:
+      cout << "INT: ";
+      break;
+    case MINUS:
+      cout << "MINUS: ";
+      break;
+    case PLUS:
+      cout << "PLUS: " ;
+      break;
+    case MULT:
+      cout << "MULT: ";
+      break;
+    case DIV:
+      cout << "DIV: ";
+      break;
+    case PLUSPLUS:
+      cout << "PLUSPLUS: ";
+      break;
+    default:
+      cout << "ERROR: "; 
+    }
+
+  cout << "[" << tval << "]" << endl;
+  
+}
+
+TokType getToken(istream &is, string &val)
+{
+  static int DFA[8][256];
+  static bool tableFilled=false;
+
+  if (!tableFilled)
+    {
+      
+      tableFilled=true;
+    }
+}
