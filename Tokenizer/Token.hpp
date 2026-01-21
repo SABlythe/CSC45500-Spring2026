@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-enum TokType {ID, INT, MINUS, PLUS, MULT, DIV, PLUSPLUS, EOI};
+enum TokType {ID, INT, MINUS, PLUS, MULT, DIV, PLUSPLUS, EOI, ERROR_TOK};
 
 void printToken(TokType t, const std::string& tval);
 

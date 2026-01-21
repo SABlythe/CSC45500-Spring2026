@@ -1,0 +1,7 @@
+42 hello world
++ - * / +++
+hello42
+hello 42
+42hello
+error <
+ok

@@ -39,7 +39,7 @@ void printToken(TokType ttype, const string &tval)
       cout << "ERROR: "; 
     }
 
-  cout << "[" << tval << "]" << endl;
+  cout << "[" << tval << "]";
   
 }
 
@@ -115,7 +115,7 @@ TokType getToken(istream &is, string &tval)
 
       // move on to the next state. 
       char nextChar = is.get();
-      int nextState = DFA[currState][nextChar]; 
+      int nextState = DFA[currState][(unsigned int) nextChar]; 
       currState = nextState;
 
       // as long as next character was valid, add it to token value
@@ -126,8 +126,36 @@ TokType getToken(istream &is, string &tval)
   // last char we got was not part of token, so might be part of
   //   next token
   is.unget();
-  
-  return EOI /* change to TokType based on prevState */; 
+
+  switch (prevState)
+    {
+    case 1:
+      return ID;
+      break;
+    case 2:
+      return INT;
+      break;
+    case 3:
+      return MINUS;
+      break;
+    case 4:
+      return PLUS;
+      break;
+    case 5:
+      return MULT;
+      break;
+    case 6:
+      return DIV;
+      break;
+    case 7:
+      return PLUSPLUS;
+      break;
+    default:
+      is.get();
+      return ERROR_TOK;
+      break;
+    }
+  return ERROR_TOK /* change to TokType based on prevState */; 
   
 
   
